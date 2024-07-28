@@ -7,108 +7,102 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Spray 'n' Pray</h1>
-    <form id="alarmForm">
+  <h1>Spray 'n' Pray</h1>
+  <p id="realtimeClock"></p>
+  <form id="alarmForm">
     <p id="datetime"></p>
+    <div class="day-labels">
+      <span>Mon</span>
+      <span>Tue</span>
+      <span>Wed</span>
+      <span>Thu</span>
+      <span>Fri</span>
+      <span>Sat</span>
+      <span>Sun</span>
+    </div>
 
-    <script>
-      // Get current date and time
+    <div class="alarm">
+      <span>7:00</span>
+      <span><input type="checkbox" name="alarm2" value="Mon"></span>
+      <span><input type="checkbox" name="alarm2" value="Tue"></span>
+      <span><input type="checkbox" name="alarm2" value="Wed"></span>
+      <span><input type="checkbox" name="alarm2" value="Thu"></span>
+      <span><input type="checkbox" name="alarm2" value="Fri"></span>
+      <span><input type="checkbox" name="alarm2" value="Sat"></span>
+      <span><input type="checkbox" name="alarm2" value="Sun"></span>
+    </div>
+    <div class="alarm">
+      <span>7:05</span>
+      <input type="checkbox" name="alarm2" value="Mon">
+      <input type="checkbox" name="alarm2" value="Tue">
+      <input type="checkbox" name="alarm2" value="Wed">
+      <input type="checkbox" name="alarm2" value="Thu">
+      <input type="checkbox" name="alarm2" value="Fri">
+      <input type="checkbox" name="alarm2" value="Sat">
+      <input type="checkbox" name="alarm2" value="Sun">
+    </div>
+    <div class="alarm">
+      <span>7:10</span>
+      <input type="checkbox" name="alarm2" value="Mon">
+      <input type="checkbox" name="alarm2" value="Tue">
+      <input type="checkbox" name="alarm2" value="Wed">
+      <input type="checkbox" name="alarm2" value="Thu">
+      <input type="checkbox" name="alarm2" value="Fri">
+      <input type="checkbox" name="alarm2" value="Sat">
+      <input type="checkbox" name="alarm2" value="Sun">
+    </div>
+    <div class="alarm">
+      <span>7:15</span>
+      <input type="checkbox" name="alarm2" value="Mon">
+      <input type="checkbox" name="alarm2" value="Tue">
+      <input type="checkbox" name="alarm2" value="Wed">
+      <input type="checkbox" name="alarm2" value="Thu">
+      <input type="checkbox" name="alarm2" value="Fri">
+      <input type="checkbox" name="alarm2" value="Sat">
+      <input type="checkbox" name="alarm2" value="Sun">
+    </div>
+    <br>
+    <button type="button" onclick="addNewAlarm()">Add New Alarm</button>
+  </form>
+  <p id="response"></p>
+
+  <script>
+
+    let alarmCount = 2;
+
+    function addNewAlarm() {
+      alarmCount++;
+      const newAlarmDiv = document.createElement('div');
+      newAlarmDiv.className = 'alarm';
+      newAlarmDiv.innerHTML = `
+        <span>Alarm ${alarmCount}</span>
+        <label><input type="checkbox" name="alarm${alarmCount}" value="Mon"> Mon</label>
+        <label><input type="checkbox" name="alarm${alarmCount}" value="Tue"> Tue</label>
+        <label><input type="checkbox" name="alarm${alarmCount}" value="Wed"> Wed</label>
+        <label><input type="checkbox" name="alarm${alarmCount}" value="Thu"> Thu</label>
+        <label><input type="checkbox" name="alarm${alarmCount}" value="Fri"> Fri</label>
+        <label><input type="checkbox" name="alarm${alarmCount}" value="Sat"> Sat</label>
+        <label><input type="checkbox" name="alarm${alarmCount}" value="Sun"> Sun</label>
+      `;
+      document.getElementById('alarmForm').insertBefore(newAlarmDiv, document.getElementById('alarmForm').lastElementChild.previousElementSibling);
+    }
+
+    // Function to update the time every second
+    function updateTime() {
       var now = new Date();
-      var datetime = now.toLocaleString();
-
-      // Insert date and time into HTML
-      document.getElementById("datetime").innerHTML = datetime;
-    </script>
-      <body>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;W&nbsp;&nbsp;&nbsp;&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S</body>
-      <div class="alarm">
-        <span>Alarm 1</span>
-        <input type="checkbox" name="alarm1" value="Mon">
-        <input type="checkbox" name="alarm1" value="Tue">
-        <input type="checkbox" name="alarm1" value="Wed">
-        <input type="checkbox" name="alarm1" value="Thu">
-        <input type="checkbox" name="alarm1" value="Fri">
-        <input type="checkbox" name="alarm1" value="Sat">
-        <input type="checkbox" name="alarm1" value="Sun">
-      </div>
-      <div class="alarm">
-        <span>Alarm 2</span>
-        <input type="checkbox" name="alarm2" value="Mon">
-        <input type="checkbox" name="alarm2" value="Tue">
-        <input type="checkbox" name="alarm2" value="Wed">
-        <input type="checkbox" name="alarm2" value="Thu">
-        <input type="checkbox" name="alarm2" value="Fri">
-        <input type="checkbox" name="alarm2" value="Sat">
-        <input type="checkbox" name="alarm2" value="Sun">
-      </div>
-      <br></br>
-      <!-- Add more alarms as needed -->
-      <button type="button" onclick="addNewAlarm()">Add New Alarm</button>
-    </form>
-    <p id="response"></p>
-  
-    <script>
-      let alarmCount = 2;
-  
-      function setAlarms() {
-        const form = document.getElementById('alarmForm');
-        const alarms = [];
-        for (let i = 1; i <= alarmCount; i++) {
-          const checkboxes = form.querySelectorAll(`input[name="alarm${i}"]:checked`);
-          const days = Array.from(checkboxes).map(checkbox => checkbox.value);
-          if (days.length > 0) {
-            alarms.push({ alarm: `alarm${i}`, days: days });
-          }
-        }
-  
-        fetch('http://your_esp_ip_address/set_alarms', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ alarms: alarms })
-        })
-        .then(response => response.text())
-        .then(data => document.getElementById('response').innerText = data)
-        .catch(error => console.error('Error:', error));
-      }
-  
-      function addNewAlarm() {
-        alarmCount++;
-        const newAlarmDiv = document.createElement('div');
-        newAlarmDiv.className = 'alarm';
-        newAlarmDiv.innerHTML = `
-          <span>Alarm ${alarmCount}</span>
-          <input type="checkbox" name="alarm${alarmCount}" value="Mon">
-          <input type="checkbox" name="alarm${alarmCount}" value="Tue">
-          <input type="checkbox" name="alarm${alarmCount}" value="Wed">
-          <input type="checkbox" name="alarm${alarmCount}" value="Thu">
-          <input type="checkbox" name="alarm${alarmCount}" value="Fri">
-          <input type="checkbox" name="alarm${alarmCount}" value="Sat">
-          <input type="checkbox" name="alarm${alarmCount}" value="Sun">
-        `;
-        document.getElementById('alarmForm').insertBefore(newAlarmDiv, document.getElementById('alarmForm').lastElementChild.previousElementSibling);
-      }
-    </script>
-    </form>
-<p id="response"></p>
-
-<script>
-  function addNewAlarm() {
-    alarmCount++;
-    const newAlarmDiv = document.createElement('div');
-    newAlarmDiv.className = 'alarm';
-    newAlarmDiv.innerHTML = `
-      <span>Alarm ${alarmCount}</span>
-      <label><input type="checkbox" name="alarm${alarmCount}" value="Mon"> Mon</label>
-      <label><input type="checkbox" name="alarm${alarmCount}" value="Tue"> Tue</label>
-      <label><input type="checkbox" name="alarm${alarmCount}" value="Wed"> Wed</label>
-      <label><input type="checkbox" name="alarm${alarmCount}" value="Thu"> Thu</label>
-      <label><input type="checkbox" name="alarm${alarmCount}" value="Fri"> Fri</label>
-      <label><input type="checkbox" name="alarm${alarmCount}" value="Sat"> Sat</label>
-      <label><input type="checkbox" name="alarm${alarmCount}" value="Sun"> Sun</label>
-    `;
-    document.getElementById('alarmForm').insertBefore(newAlarmDiv, document.getElementById('alarmForm').lastElementChild.previousElementSibling);
-  }
-</script>
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+      document.getElementById('realtimeClock').innerHTML = strTime;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
 </body>
 </html>

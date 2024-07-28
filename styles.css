@@ -1,48 +1,67 @@
 /* styles.css */
 
 body {
-    font-family: Exo 2, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-  
-  h1 {
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px 0;
-    margin: 0;
-  }
-  
-  form {
-    background-color: white;
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin: 20px auto;
-    width: 300px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  label {
-    display: block;
-    margin: 10px 0;
-  }
-  
-  button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  #response {
-    margin-top: 20px;
-    color: #4CAF50;
-  }  
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px 0;
+  margin: 0;
+}
+
+form {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 20px auto;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 10px 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#response {
+  margin-top: 20px;
+  color: #4CAF50;
+}
+
+.day-labels {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.day-labels span {
+  width: 40px; /* Adjust width as needed */
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+}
+
+#realtimeClock {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
