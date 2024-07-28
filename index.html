@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spray 'n' Pray</title> 
+    <img src="logo.png" alt="logo">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Spray 'n' Pray</h1>
+    <h2>Alarm Control Panel</h2>
+    <form id="alarmForm">
+    <label>
+        <input type="checkbox" name="alarm" value="alarm1"> 7:00
+    </label><br>
+    <label>
+        <input type="checkbox" name="alarm" value="alarm2"> 7:05
+    </label><br>
+    <label>
+        <input type="checkbox" name="alarm" value="alarm3"> 7:10
+    </label><br>
+    <label>
+        <input type="checkbox" name="alarm" value="alarm4"> 7:15
+    </label><br>
+    <button type="button" onclick="setAlarms()">Set Alarms</button>
+    </form>
+    <p id="response"></p>
+
+  <script>
+    function setAlarms() {
+        const form = document.getElementById('alarmForm');
+        const formData = new FormData(form);
+        const alarms = formData.getAll('alarm');
+
+        fetch('http://your_esp_ip_address/set_alarms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ alarms: alarms })
+        })
+        .then(response => response.text())
+        .then(data => document.getElementById('response').innerText = data)
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+</body>
+</html>
