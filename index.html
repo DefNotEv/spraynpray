@@ -130,25 +130,12 @@
 
     // Function to collect alarm data and send POST request
     function spray() {
-      const form = document.getElementById('alarmForm');
-      const alarms = [];
-      form.querySelectorAll('.alarm').forEach(alarmDiv => {
-        const time = alarmDiv.querySelector('span').innerText;
-        const days = [];
-        alarmDiv.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
-          days.push(checkbox.value);
-        });
-        if (days.length > 0) {
-          alarms.push({ time, days });
-        }
-      });
-
       fetch('http://192.168.1.1/alarms', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ alarms }),
+        body: JSON.stringify({}),
       })
     }
   </script>
