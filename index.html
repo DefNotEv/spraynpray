@@ -1,49 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spray 'n' Pray</title> 
-    <img src="logo.png" alt="logo">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alarm Control</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Spray 'n' Pray</h1>
-    <h2>Alarm Control Panel</h2>
     <form id="alarmForm">
-    <label>
-        <input type="checkbox" name="alarm" value="alarm1"> 7:00
-    </label><br>
-    <label>
-        <input type="checkbox" name="alarm" value="alarm2"> 7:05
-    </label><br>
-    <label>
-        <input type="checkbox" name="alarm" value="alarm3"> 7:10
-    </label><br>
-    <label>
-        <input type="checkbox" name="alarm" value="alarm4"> 7:15
-    </label><br>
-    <button type="button" onclick="setAlarms()">Set Alarms</button>
+    <p id="datetime"></p>
+
+    <script>
+      // Get current date and time
+      var now = new Date();
+      var datetime = now.toLocaleString();
+
+      // Insert date and time into HTML
+      document.getElementById("datetime").innerHTML = datetime;
+    </script>
+      <body>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;W&nbsp;&nbsp;&nbsp;&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S</body>
+      <div class="alarm">
+        <span>Alarm 1</span>
+        <input type="checkbox" name="alarm1" value="Mon">
+        <input type="checkbox" name="alarm1" value="Tue">
+        <input type="checkbox" name="alarm1" value="Wed">
+        <input type="checkbox" name="alarm1" value="Thu">
+        <input type="checkbox" name="alarm1" value="Fri">
+        <input type="checkbox" name="alarm1" value="Sat">
+        <input type="checkbox" name="alarm1" value="Sun">
+      </div>
+      <div class="alarm">
+        <span>Alarm 2</span>
+        <input type="checkbox" name="alarm2" value="Mon">
+        <input type="checkbox" name="alarm2" value="Tue">
+        <input type="checkbox" name="alarm2" value="Wed">
+        <input type="checkbox" name="alarm2" value="Thu">
+        <input type="checkbox" name="alarm2" value="Fri">
+        <input type="checkbox" name="alarm2" value="Sat">
+        <input type="checkbox" name="alarm2" value="Sun">
+      </div>
+      <br></br>
+      <!-- Add more alarms as needed -->
+      <button type="button" onclick="addNewAlarm()">Add New Alarm</button>
     </form>
     <p id="response"></p>
-
-  <script>
-    function setAlarms() {
+  
+    <script>
+      let alarmCount = 2;
+  
+      function setAlarms() {
         const form = document.getElementById('alarmForm');
-        const formData = new FormData(form);
-        const alarms = formData.getAll('alarm');
-
+        const alarms = [];
+        for (let i = 1; i <= alarmCount; i++) {
+          const checkboxes = form.querySelectorAll(`input[name="alarm${i}"]:checked`);
+          const days = Array.from(checkboxes).map(checkbox => checkbox.value);
+          if (days.length > 0) {
+            alarms.push({ alarm: `alarm${i}`, days: days });
+          }
+        }
+  
         fetch('http://your_esp_ip_address/set_alarms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ alarms: alarms })
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ alarms: alarms })
         })
         .then(response => response.text())
         .then(data => document.getElementById('response').innerText = data)
         .catch(error => console.error('Error:', error));
-    }
-  </script>
+      }
+  
+      function addNewAlarm() {
+        alarmCount++;
+        const newAlarmDiv = document.createElement('div');
+        newAlarmDiv.className = 'alarm';
+        newAlarmDiv.innerHTML = `
+          <span>Alarm ${alarmCount}</span>
+          <input type="checkbox" name="alarm${alarmCount}" value="Mon">
+          <input type="checkbox" name="alarm${alarmCount}" value="Tue">
+          <input type="checkbox" name="alarm${alarmCount}" value="Wed">
+          <input type="checkbox" name="alarm${alarmCount}" value="Thu">
+          <input type="checkbox" name="alarm${alarmCount}" value="Fri">
+          <input type="checkbox" name="alarm${alarmCount}" value="Sat">
+          <input type="checkbox" name="alarm${alarmCount}" value="Sun">
+        `;
+        document.getElementById('alarmForm').insertBefore(newAlarmDiv, document.getElementById('alarmForm').lastElementChild.previousElementSibling);
+      }
+    </script>
+    </form>
+<p id="response"></p>
+
+<script>
+  function addNewAlarm() {
+    alarmCount++;
+    const newAlarmDiv = document.createElement('div');
+    newAlarmDiv.className = 'alarm';
+    newAlarmDiv.innerHTML = `
+      <span>Alarm ${alarmCount}</span>
+      <label><input type="checkbox" name="alarm${alarmCount}" value="Mon"> Mon</label>
+      <label><input type="checkbox" name="alarm${alarmCount}" value="Tue"> Tue</label>
+      <label><input type="checkbox" name="alarm${alarmCount}" value="Wed"> Wed</label>
+      <label><input type="checkbox" name="alarm${alarmCount}" value="Thu"> Thu</label>
+      <label><input type="checkbox" name="alarm${alarmCount}" value="Fri"> Fri</label>
+      <label><input type="checkbox" name="alarm${alarmCount}" value="Sat"> Sat</label>
+      <label><input type="checkbox" name="alarm${alarmCount}" value="Sun"> Sun</label>
+    `;
+    document.getElementById('alarmForm').insertBefore(newAlarmDiv, document.getElementById('alarmForm').lastElementChild.previousElementSibling);
+  }
+</script>
 </body>
 </html>
